@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LayoutController">
+   <top>
+      <MenuBar prefHeight="40.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Projet">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleNouveauProjet" text="Nouveau">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+              <MenuItem mnemonicParsing="false" onAction="#handleRenommerProjet" text="Renommer" />
+              <MenuItem mnemonicParsing="false" onAction="#handleOuvrirProjet" text="Ouvrir">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+              <MenuItem mnemonicParsing="false" onAction="#handleEnregistrerProjet" text="Enregistrer">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+              <MenuItem mnemonicParsing="false" onAction="#handleEnregistrerSousProjet" text="Enregistrer Sous..">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator></MenuItem>
+              <MenuItem mnemonicParsing="false" onAction="#handleExportToPDFProjet" text="Enregistrer en PDF">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <Menu mnemonicParsing="false" text="En Ligne">
+                    <items>
+                    <MenuItem mnemonicParsing="false" onAction="#handleUploadSave" text="Sauvegarder en ligne" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleUploadPDF" text="Sauvegarder le PDF" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleDownloadPdf" text="Télécharger le Pdf" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleDownloadXml" text="Télécharger le Projet" />
+                    </items>
+                  </Menu>
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" onAction="#handleNouveauChapitre" text="Chapitre">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Nouveau">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator></MenuItem>
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Fiche">
+               <items>
+                  <Menu mnemonicParsing="false" text="Nouveau">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#handleFichePersonnage" text="Personnage" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleFicheLieu" text="Lieu" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleFicheEvnmt" text="Evénement" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleFichePersonnalise" text="Personnalisée" />
+                    </items>
+                  </Menu>
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Aide">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#aboutKibble" text="A propos de Kibble" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>
