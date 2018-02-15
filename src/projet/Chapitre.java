@@ -16,6 +16,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Chapitre {
 
+	/*ATTRIBUTES*/
+
 	private static final int MAX_VERSIONS = 5;
 	@XmlAttribute
 	private int numero;
@@ -35,13 +37,7 @@ public class Chapitre {
 	@XmlElement(name = "Chapitre_Anterieur")
 	private List<ChapitreAnterieur> chapitresAnterieurs;
 
-	public Note getNotes() {
-		return notes;
-	}
-
-	public void setNotes(Note notes) {
-		this.notes = notes;
-	}
+	/*CONSTRUCTORS*/
 	
 	public Chapitre() {
 		this.texte="";
@@ -61,42 +57,7 @@ public class Chapitre {
 		this.chapitresAnterieurs = new ArrayList<>();
 	}
 
-	public String getTitre() {
-		return titre;
-	}
-
-	public void setTitre(String titre) {
-		this.titre = titre;
-		this.notes.setNom(titre);
-	}
-
-	public int getNumero() {
-		return numero;
-	}
-
-	public void setNumero(int numero) {
-		this.numero = numero;
-	}
-
-	public List<ChapitreAnterieur> getChapitresAnterieurs() {
-		return chapitresAnterieurs;
-	}
-
-	public void setChapitresAnterieurs(List<ChapitreAnterieur> chapitresAnterieurs) {
-		this.chapitresAnterieurs = chapitresAnterieurs;
-	}
-
-	public String getTexte() {
-		return texte;
-	}
-
-	public void setTexte(String texte) {
-		this.texte = texte;
-	}
-
-	public String toString() {
-		return titre;
-	}
+	/*METHODS*/
 
 	/**
 	 * Enregistre la version précédente dans les chapitres antérieurs 
@@ -122,12 +83,30 @@ public class Chapitre {
 		this.backupTexte = texte;
 	}
 
-	public String getBackupTexte() {
-		return backupTexte;
-	}
-	
-	public void saveNote(String note){
-		this.notes.setTexte(note);
+	/*GETTERS & SETTERS*/
+
+	public int getNumero() { return numero; }
+	public void setNumero(int numero) { this.numero = numero; }
+
+	public String getTitre() { return titre; }
+	public void setTitre(String titre) {
+		this.titre = titre;
+		this.notes.setNom(titre);
 	}
 
+	public String getTexte() { return texte; }
+	public void setTexte(String texte) { this.texte = texte; }
+
+	public String getBackupTexte() { return backupTexte; }
+	
+	public void saveNote(String note){ this.notes.setTexte(note); }
+
+	public Note getNotes() { return notes; }
+	public void setNotes(Note notes) { this.notes = notes; }
+
+	public List<ChapitreAnterieur> getChapitresAnterieurs() { return chapitresAnterieurs; }
+	public void setChapitresAnterieurs(List<ChapitreAnterieur> chapitresAnterieurs) { this.chapitresAnterieurs = chapitresAnterieurs; }
+
+
+	public String toString() { return titre; }
 }

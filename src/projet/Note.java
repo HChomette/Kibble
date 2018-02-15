@@ -1,8 +1,13 @@
 package projet;
 
 public class Note {
+
+	/*ATTRIBUTES*/
+
 	private String nom;
 	private String texte;
+
+	/*CONSTRUCTORS*/
 
 	public Note() {
 		this("Projet", "");
@@ -12,6 +17,8 @@ public class Note {
 		this.nom = nom;
 		this.texte = texte;
 	}
+
+	/*GETTERS & SETTERS*/
 
 	public String getNom() {
 		return nom;

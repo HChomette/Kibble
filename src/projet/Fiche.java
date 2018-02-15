@@ -13,13 +13,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Fiche {
-	
+
+	/*ATTRIBUTES*/
+
 	@XmlAttribute
 	private String nom;
 	
 	@XmlElementWrapper(name="Lignes")
     @XmlElement(name="Ligne")
 	private ArrayList<LigneFiche> donnees;
+
+	/*CONSTRUCTORS*/
 
 	public Fiche(){
 		donnees = new ArrayList<>();
@@ -34,32 +38,22 @@ public class Fiche {
 		this.nom = fiche.getNom();
 		this.donnees = (ArrayList<LigneFiche>) fiche.donnees.clone();
 	}
-	
-	public String getNom() {
-		return nom;
-	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+	/*GETTERS & SETTERS*/
 
-	public ArrayList<LigneFiche> getDonnees() {
-		return donnees;
-	}
+	public String getNom() { return nom; }
+	public void setNom(String nom) { this.nom = nom; }
 
-	public void setDonnees(ArrayList<LigneFiche> donnees) {
-		this.donnees = donnees;
-	}	
-	public void enregistrer(String emplacement){
-		
-	}
-	
-	public Fiche clone(){
-		return new Fiche(this);
-	}
+	public ArrayList<LigneFiche> getDonnees() { return donnees; }
+	public void setDonnees(ArrayList<LigneFiche> donnees) { this.donnees = donnees; }
+
+	/*METHODS*/
+
+	public Fiche clone(){ return new Fiche(this); }
 	
 	/**
-	 * Renvoie
+	 * Return a default character card
+	 * TODO : Move default cards to a separate class
 	 */
 	public static Fiche getFichePersonnage(String nom){
 		Fiche res = new Fiche(nom);
@@ -103,7 +97,12 @@ public class Fiche {
 		
 		return res;
 	}
-	
+
+	/**
+	 * Return a default place card
+	 * @param nom card name
+	 * @return
+	 */
 	public static Fiche getFicheLieu(String nom){
 		Fiche res = new Fiche(nom);
 		
@@ -126,7 +125,12 @@ public class Fiche {
 		
 		return res;
 	}
-	
+
+	/**
+	 * Return a default event card
+	 * @param nom
+	 * @return
+	 */
 	public static Fiche getFicheEvnmt(String nom){
 		Fiche res = new Fiche(nom);
 		

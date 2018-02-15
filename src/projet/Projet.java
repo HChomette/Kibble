@@ -7,51 +7,29 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.*;
 
+/**
+ * Classe gérant le
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Projet {
-	
-	private Note notes;
-	
+
+	/*ATTRIBUTES*/
+
 	@XmlAttribute
 	private String nomProjet;
+
+	private Note notes;
 	
 	@XmlElementWrapper(name="chapitres")
     @XmlElement(name="chapitre")
-	private List<Chapitre> chapitres; 
-	
-	public Note getNotes() {
-		return notes;
-	}
-
-	public void setNotes(Note notes) {
-		this.notes = notes;
-	}
+	private List<Chapitre> chapitres;
 
 	@XmlElementWrapper(name="fiches")
     @XmlElement(name="fiche")
 	private List<Fiche> fiches;
-	
-	public List<Chapitre> getChapitres() {
-		return chapitres;
-	}
-	
-	public void setChapitres(List<Chapitre> chapitres) {
-		this.chapitres = chapitres;
-	}
-	public List<Fiche> getFiches() {
-		return fiches;
-	}
-	public void setFiches(List<Fiche> fiches) {
-		this.fiches = fiches;
-	}
-	public String getNomProjet() {
-		return nomProjet;
-	}
-	public void setNomProjet(String nomProjet) {
-		this.nomProjet = nomProjet;
-	}
-	
+
+	/*CONSTRUCTORS*/
 	public Projet(){
 		this(null);
 	}
@@ -63,23 +41,25 @@ public class Projet {
 		this.nomProjet = nom;
 		
 	}
-	
+
+	/*METHODS*/
+
 	/**
 	 * Cree un nouveau projet et le retourne
-	 * @param emplacement
+	 * @param nom
 	 */
 	public static Projet creer(String nom){
 		return new Projet(nom);
 	}
 	
 	/**
-	 * Renomme le projet dans l'appli java
+	 * Renomme le projet dans l'appli
 	 * @param nom le nouveau nom
 	 */
 	public void renommer(String nom){
 		this.nomProjet = nom;
 	}
-	
+
 	/**
 	 * Cree un nouveau chapitre
 	 * @param nom le nom du chapitre
@@ -112,10 +92,6 @@ public class Projet {
 		for(int i = 0; i<chapitres.size(); i++)
 			chapitres.get(i).setNumero(i+1);
 	}
-	
-	public Chapitre getChapitre(int numeroSelection) {
-		return chapitres.get(numeroSelection);
-	}
 
 	/**
 	 * Supprime le chapitre à l'index donne, et reordonne le reste en consequence
@@ -136,13 +112,26 @@ public class Projet {
 	
 	/**
 	 * Enregistre la version précédente de chaque chapitre dans ses chapitres antérieurs
-	 * {@link #enregistrerAnterieur() enregistrerAnterieur}
+	 * {@link Chapitre#enregistrerAnterieur()}
 	 */
 	public void enregistrerAnterieurs(){
 		for(Chapitre c : chapitres)
 			c.enregistrerAnterieur();
 	}
-	
-	
+
+	/* GETTERS & SETTERS */
+
+	public String getNomProjet() { return nomProjet; }
+	public void setNomProjet(String nomProjet) { this.nomProjet = nomProjet;
+	}
+	public Note getNotes() { return notes; }
+	public void setNotes(Note notes) { this.notes = notes; }
+
+	public List<Chapitre> getChapitres() { return chapitres; }
+	public void setChapitres(List<Chapitre> chapitres) { this.chapitres = chapitres; }
+	public Chapitre getChapitre(int numeroSelection) { return chapitres.get(numeroSelection); }
+
+	public List<Fiche> getFiches() { return fiches; }
+	public void setFiches(List<Fiche> fiches) { this.fiches = fiches; }
 
 }
