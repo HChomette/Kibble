@@ -18,7 +18,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import outils.ExportToPDF;
 import outils.SauvegardeXML;
-import projet.Chapitre;
+import project.Chapter;
 
 public class LayoutController implements Controller {
 
@@ -67,7 +67,7 @@ public class LayoutController implements Controller {
 		if (file != null)
 			try {
 				// nettoyer();
-				MainApp.setProjet(SauvegardeXML.loadFromXML(file));
+				MainApp.setProject(SauvegardeXML.loadFromXML(file));
 				tabMatiereController.initialize();
 				ecritureController.initialize();
 			} catch (Exception e) {
@@ -78,17 +78,17 @@ public class LayoutController implements Controller {
 
 	@FXML
 	private void handleRenommerProjet() {
-		if (MainApp.getProjet() == null)
+		if (MainApp.getProject() == null)
 			return;
 		TextInputDialog dialog = new TextInputDialog("Nom");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getStylesheets().add(MainApp.getStyle());
-		dialog.setTitle("Renommer le projet");
-		dialog.setHeaderText("Nouveau nom du projet");
-		dialog.setContentText("Entrez le nouveau nom de votre projet : ");
+		dialog.setTitle("Renommer le project");
+		dialog.setHeaderText("Nouveau nom du project");
+		dialog.setContentText("Entrez le nouveau nom de votre project : ");
 		Optional<String> nomProjet = dialog.showAndWait();
 		if (nomProjet.isPresent()) {
-			MainApp.getProjet().setNomProjet(nomProjet.get());
+			MainApp.getProject().setName(nomProjet.get());
 			MainApp.setStageTitreProjet(nomProjet.get());
 		}
 
@@ -97,18 +97,18 @@ public class LayoutController implements Controller {
 	private void enregistrer(File file) {
 		// On enregistre le contenu du chapitre en cours d'édition dans son
 		// objet
-		Chapitre c = tabMatiereController.getChapitreActuel();
+		Chapter c = tabMatiereController.getChapitreActuel();
 		if (c != null) {
-			c.setTexte(ecritureController.getTextChapitre());
+			c.setText(ecritureController.getTextChapitre());
 		}
-		MainApp.getProjet().enregistrerAnterieurs();
-		SauvegardeXML.saveToXML(MainApp.getProjet(), file);
-		MainApp.getProjet().backupChapitres();
+		MainApp.getProject().enregistrerAnterieurs();
+		SauvegardeXML.saveToXML(MainApp.getProject(), file);
+		MainApp.getProject().backupChapters();
 	}
 
 	@FXML
 	private void handleEnregistrerProjet() {
-		if (MainApp.getProjet() == null)
+		if (MainApp.getProject() == null)
 			return;
 		File file = SauvegardeXML.getFilePath();
 		if (file != null)
@@ -119,7 +119,7 @@ public class LayoutController implements Controller {
 
 	@FXML
 	private void handleEnregistrerSousProjet() {
-		if (MainApp.getProjet() == null)
+		if (MainApp.getProject() == null)
 			return;
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
@@ -141,9 +141,9 @@ public class LayoutController implements Controller {
 		TextInputDialog dialog = new TextInputDialog("Nom");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getStylesheets().add(MainApp.getStyle());
-		dialog.setTitle("Nouveau projet");
-		dialog.setHeaderText("Nom du projet");
-		dialog.setContentText("Entrez le nom de votre projet : ");
+		dialog.setTitle("Nouveau project");
+		dialog.setHeaderText("Nom du project");
+		dialog.setContentText("Entrez le nom de votre project : ");
 		Optional<String> nomProjet = dialog.showAndWait();
 		if (nomProjet.isPresent()) {
 			// this.nettoyer();
@@ -155,7 +155,7 @@ public class LayoutController implements Controller {
 
 	@FXML
 	private void handleExportToPDFProjet() {
-		if (MainApp.getProjet() == null)
+		if (MainApp.getProject() == null)
 			return;
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
@@ -178,7 +178,7 @@ public class LayoutController implements Controller {
 
 	@FXML
 	public void handleUploadPDF() {
-		if (MainApp.getProjet() == null)
+		if (MainApp.getProject() == null)
 			return;
 		String type = "uploadé"; // Pour le message d'erreur / succès
 		try {
@@ -191,7 +191,7 @@ public class LayoutController implements Controller {
 
 	@FXML
 	public void handleUploadSave() {
-		if (MainApp.getProjet() == null)
+		if (MainApp.getProject() == null)
 			return;
 		String type = "uploadé";
 		try {
@@ -232,8 +232,8 @@ public class LayoutController implements Controller {
 			DialogPane dialogPane = dialog.getDialogPane();
 			dialogPane.getStylesheets().add(MainApp.getStyle());
 			dialog.setTitle("Projets");
-			dialog.setHeaderText("Choisissez le projet à récupérer");
-			dialog.setContentText("Nom du projet :");
+			dialog.setHeaderText("Choisissez le project à récupérer");
+			dialog.setContentText("Nom du project :");
 			Optional<String> res = dialog.showAndWait();
 			if (res.isPresent()) {
 				if (FtpClient.downloadDialog(res.get() + ext, "*" + ext))
@@ -251,8 +251,8 @@ public class LayoutController implements Controller {
 		alert.getDialogPane().setPrefSize(480, 250);
 		alert.setTitle("Informations");
 		alert.setHeaderText("A propos de Kibble");
-		alert.setContentText("Kibble est un projet réalisé par Xavier, Nolwenn, Aline, Lucas et Hector. \n"
-				+ "Nous sommes 5 élèves de l'IUT Paris Descartes, et ce programme a été réalisé dans le cadre d'un projet de fin d'année. \n\n"
+		alert.setContentText("Kibble est un project réalisé par Xavier, Nolwenn, Aline, Lucas et Hector. \n"
+				+ "Nous sommes 5 élèves de l'IUT Paris Descartes, et ce programme a été réalisé dans le cadre d'un project de fin d'année. \n\n"
 				+ "Le logiciel est programmé en Java et utilise JavaFX pour ses interfaces. "
 				+ "Nous avons également utilisé la bibliothèque iTextPdf(Génération de pdf)");
 

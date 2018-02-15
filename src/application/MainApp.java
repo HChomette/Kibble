@@ -13,7 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import outils.SauvegardeXML;
-import projet.Projet;
+import project.Project;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
@@ -24,7 +24,7 @@ import javafx.scene.layout.BorderPane;
 
 public class MainApp extends Application {
 	//**********ATTRIBUTS
-	private static Projet projet;
+	private static Project project;
 	private FicheController ficheController;
 	private TabMatiereController tabMatiereController;
 	private EcritureController ecritureController;
@@ -54,7 +54,7 @@ public class MainApp extends Application {
 		
 		LayoutController.setLayoutController(controller);
 		style();
-		if(projet == null){
+		if(project == null){
 			Alert alert = new Alert(AlertType.INFORMATION);
 			Stage stageA = (Stage) alert.getDialogPane().getScene().getWindow();
 			try {
@@ -67,7 +67,7 @@ public class MainApp extends Application {
 			if(style != null) dialogPane.getStylesheets().add(style);
 			alert.setTitle("Kibble");
 			alert.setHeaderText("Bienvenue sur Kibble");
-			alert.setContentText("Pour commencer, créez un nouveau projet ou ouvrez un projet existant dans le menu \"Projet\".");
+			alert.setContentText("Pour commencer, créez un nouveau project ou ouvrez un project existant dans le menu \"Project\".");
 
 			alert.showAndWait();
 		}
@@ -101,9 +101,9 @@ public class MainApp extends Application {
 		File file = SauvegardeXML.getFilePath();
 	    if (file != null)
 			try {
-				projet = SauvegardeXML.loadFromXML(file);
-				projet.backupChapitres();
-				MainApp.setStageTitreProjet(projet.getNomProjet());
+				project = SauvegardeXML.loadFromXML(file);
+				project.backupChapters();
+				MainApp.setStageTitreProjet(project.getName());
 			} catch (Exception e) {
 				Alert alert = new Alert(AlertType.ERROR);
 		        alert.setTitle("Erreur");
@@ -132,7 +132,7 @@ public class MainApp extends Application {
 	}
 	
 	public static void creationProjet(String nomProjet){
-		projet = new Projet(nomProjet);
+		project = new Project(nomProjet);
 		SauvegardeXML.setFilePath(null);
 		MainApp.setStageTitreProjet(nomProjet);
 	}
@@ -184,12 +184,12 @@ public class MainApp extends Application {
 		return stage;
 	}
 	
-	public static Projet getProjet(){
-		return projet;
+	public static Project getProject(){
+		return project;
 	}
 	
-	public static void setProjet(Projet p){
-		projet = p;
+	public static void setProject(Project p){
+		project = p;
 	}
 	
 	public static void main(String[] args) {

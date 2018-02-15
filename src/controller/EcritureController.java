@@ -9,8 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import projet.Chapitre;
-import projet.ChapitreAnterieur;
+import project.Chapter;
+import project.PreviousChapter;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -29,13 +29,13 @@ public class EcritureController implements Controller {
 	@FXML
 	private Button buttonVersion;
 
-	private Chapitre chapitreEnCours = null;
+	private Chapter chapterEnCours = null;
 
 	@FXML
 	public void initialize() {
 		this.style();
 		this.zoneTextEcriture.setText("");
-		this.chapitreEnCours = null;
+		this.chapterEnCours = null;
 	}
 
 	public String getTextChapitre() {
@@ -43,13 +43,13 @@ public class EcritureController implements Controller {
 	}
 
 	/**
-	 * Ouvre un chapitre dans le zone d'écriture
+	 * Ouvre un chapter dans le zone d'écriture
 	 */
-	public void setUpChapitre(Chapitre chapitre) {
+	public void setUpChapitre(Chapter chapter) {
 		this.zoneTextEcriture.setEditable(true);
-		this.chapitreEnCours = chapitre;
-		this.zoneTextEcriture.setText(chapitreEnCours.getTexte());
-		this.labelTitreChapitre.setText(chapitreEnCours.getNumero() + ".	" + chapitreEnCours.getTitre());
+		this.chapterEnCours = chapter;
+		this.zoneTextEcriture.setText(chapterEnCours.getText());
+		this.labelTitreChapitre.setText(chapterEnCours.getNumber() + ".	" + chapterEnCours.getTitle());
 	}
 
 	public TextArea getZoneTextEcriture() {
@@ -73,21 +73,21 @@ public class EcritureController implements Controller {
 	 */
 	public void openAnterieure() {
 		try {
-			List<ChapitreAnterieur> choix = chapitreEnCours.getChapitresAnterieurs();
+			List<PreviousChapter> choix = chapterEnCours.getPreviousChapters();
 
-			ChoiceDialog<ChapitreAnterieur> dialog = new ChoiceDialog<>(null, choix);
+			ChoiceDialog<PreviousChapter> dialog = new ChoiceDialog<>(null, choix);
 			DialogPane dialogPane = dialog.getDialogPane();
 			dialogPane.getStylesheets().add(MainApp.getStyle());
 			dialog.setTitle("Version antérieure");
 			dialog.setHeaderText("Visualiser une version précédente");
 			dialog.setContentText("Choisissez la version à consulter");
 
-			Optional<ChapitreAnterieur> result = dialog.showAndWait();
-			result.ifPresent(chapitreAnterieur -> showAnterieur(chapitreAnterieur, chapitreEnCours));
+			Optional<PreviousChapter> result = dialog.showAndWait();
+			result.ifPresent(previousChapter -> showAnterieur(previousChapter, chapterEnCours));
 		} catch (NullPointerException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Erreur");
-			alert.setHeaderText("Aucun Chapitre");
+			alert.setHeaderText("Aucun Chapter");
 			alert.setContentText("Vous devez d'abord ouvrir un chapitre");
 
 			alert.showAndWait();
@@ -99,13 +99,13 @@ public class EcritureController implements Controller {
 	 * Ouvre une fenêtre pour voir la version antérieure choisie
 	 * @see openAnterieure()
 	 */
-	private void showAnterieur(ChapitreAnterieur chapitreAnterieur, Chapitre chap) {
+	private void showAnterieur(PreviousChapter previousChapter, Chapter chap) {
 		try {
 			Stage stage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("/view/AnterieurView.fxml"));
 			AnterieurController a = new AnterieurController();
-			a.setChapitreAnterieur(chapitreAnterieur, chap);
+			a.setChapitreAnterieur(previousChapter, chap);
 			loader.setController(a);
 			AnchorPane layout = loader.load();
 

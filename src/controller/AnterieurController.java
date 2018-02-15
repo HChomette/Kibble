@@ -12,17 +12,17 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import projet.Chapitre;
-import projet.ChapitreAnterieur;
+import project.Chapter;
+import project.PreviousChapter;
 
 public class AnterieurController implements Controller {
 	
 	@FXML
 	private TextArea zoneTextDisplay;
 	
-	private ChapitreAnterieur chapAnt;
+	private PreviousChapter chapAnt;
 	
-	private Chapitre chap;
+	private Chapter chap;
 
 	public AnterieurController() {
 	}
@@ -30,7 +30,7 @@ public class AnterieurController implements Controller {
 	@FXML
 	public void initialize() {
 		this.style();
-		this.zoneTextDisplay.setText(chapAnt.getTexte());
+		this.zoneTextDisplay.setText(chapAnt.getText());
 	}
 
 	/**
@@ -40,9 +40,9 @@ public class AnterieurController implements Controller {
 		if(LayoutController.fontNBRegular != null) this.zoneTextDisplay.setFont(LayoutController.fontNBRegular);
 	}
 
-	public void setChapitreAnterieur(ChapitreAnterieur chapitreAnterieur, Chapitre chapitre) {
-		chapAnt = chapitreAnterieur;
-		chap = chapitre;
+	public void setChapitreAnterieur(PreviousChapter previousChapter, Chapter chapter) {
+		chapAnt = previousChapter;
+		chap = chapter;
 	}
 	
 	@FXML
@@ -57,11 +57,11 @@ public class AnterieurController implements Controller {
 		Optional<ButtonType> result = alert.showAndWait();
 		if(result.isPresent()) {
 			if (result.get() == ButtonType.OK) {
-				String retab = chapAnt.getTexte();
-				chapAnt.setTexte(chap.getTexte());
+				String retab = chapAnt.getText();
+				chapAnt.setText(chap.getText());
 				chapAnt.setDate(new Date());
-				chap.setTexte(retab);
-				LayoutController.get().getEcritureController().getZoneTextEcriture().setText(chap.getTexte());
+				chap.setText(retab);
+				LayoutController.get().getEcritureController().getZoneTextEcriture().setText(chap.getText());
 				Stage stage = (Stage) zoneTextDisplay.getScene().getWindow();
 				stage.close();
 			}

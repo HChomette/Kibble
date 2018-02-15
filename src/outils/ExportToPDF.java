@@ -46,7 +46,7 @@ public class ExportToPDF {
          *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document)
          */
         public void onOpenDocument(PdfWriter writer, Document document) {
-            header[0] = new Paragraph(MainApp.getProjet().getNomProjet(), fontHF);
+            header[0] = new Paragraph(MainApp.getProject().getName(), fontHF);
         }
  
         /**
@@ -101,7 +101,7 @@ public class ExportToPDF {
 
  
 	/**
-	 * Crée un PDF du projet à l'emplacement donné
+	 * Crée un PDF du project à l'emplacement donné
 	 * @param dest l'emplacement de destination
 	 * @throws IOException
 	 * @throws DocumentException
@@ -129,12 +129,12 @@ public class ExportToPDF {
         writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
         writer.setPageEvent(event);
         document.open();
-        Paragraph p = new Paragraph("\n\n\n" + MainApp.getProjet().getNomProjet(), fontTitreLivre);
+        Paragraph p = new Paragraph("\n\n\n" + MainApp.getProject().getName(), fontTitreLivre);
         p.setAlignment(Element.ALIGN_CENTER);
         document.add(p);
         
-        for (int i = 1; i <= MainApp.getProjet().getChapitres().size(); i++) {
-        	Paragraph title = new Paragraph(new Chunk(MainApp.getProjet().getChapitre(i-1).getTitre(), fontTitreChap));
+        for (int i = 1; i <= MainApp.getProject().getChapters().size(); i++) {
+        	Paragraph title = new Paragraph(new Chunk(MainApp.getProject().getChapter(i-1).getTitle(), fontTitreChap));
         	LineSeparator dottedline = new LineSeparator();
             dottedline.setOffset(-13);
             title.add(dottedline);
@@ -142,8 +142,8 @@ public class ExportToPDF {
         	Chapter chapter = new Chapter(title, i);
         	chapter.add(Chunk.NEWLINE);
         	    
-          	//String[] tabParagraph = MainApp.getProjet().getChapitre(i-1).getTexte().split(System.lineSeparator());
-        	String[] tabParagraph = MainApp.getProjet().getChapitre(i-1).getTexte().split("\n");
+          	//String[] tabParagraph = MainApp.getProject().getChapter(i-1).getText().split(System.lineSeparator());
+        	String[] tabParagraph = MainApp.getProject().getChapter(i-1).getText().split("\n");
      	
         	for (String stringParagraph : tabParagraph) {
         		Paragraph paragraph = new Paragraph(stringParagraph, fontTexteChap);

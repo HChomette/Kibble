@@ -8,24 +8,24 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import application.MainApp;
-import projet.Projet;
+import project.Project;
 
 public class SauvegardeXML {
 
 	/**
-	 * Sauvegarde le projet dans le XML donné
+	 * Sauvegarde le project dans le XML donné
 	 * 
-	 * @param projet
+	 * @param project
 	 * @param file
 	 */
-	public static void saveToXML(Projet projet, File file) {
+	public static void saveToXML(Project project, File file) {
 		try {
-			JAXBContext context = JAXBContext.newInstance(Projet.class);
+			JAXBContext context = JAXBContext.newInstance(Project.class);
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			// Marshalling and saving XML to the file.
-			m.marshal(projet, file);
+			m.marshal(project, file);
 
 			setFilePath(file);
 		} catch (Exception e) { // catches ANY exception
@@ -35,19 +35,19 @@ public class SauvegardeXML {
 	}
 
 	/**
-	 * Charge le projet à partir du XML donné
+	 * Charge le project à partir du XML donné
 	 * 
 	 * @param file
 	 * @return
 	 * @throws Exception
 	 */
-	public static Projet loadFromXML(File file) throws Exception {
-		JAXBContext context = JAXBContext.newInstance(Projet.class);
+	public static Project loadFromXML(File file) throws Exception {
+		JAXBContext context = JAXBContext.newInstance(Project.class);
 		Unmarshaller um = context.createUnmarshaller();
 
 		setFilePath(file);
 
-		return (Projet) um.unmarshal(file);
+		return (Project) um.unmarshal(file);
 	}
 
 	// **********PATH

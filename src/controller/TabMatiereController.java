@@ -1,8 +1,6 @@
 package controller;
 
 import java.awt.Desktop;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -27,8 +25,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import projet.Chapitre;
-import projet.Note;
+import project.Chapter;
+import project.Note;
 
 public class TabMatiereController implements Controller {
 	// **********OBJETS FXML
@@ -43,11 +41,11 @@ public class TabMatiereController implements Controller {
 	@FXML
 	private Button buttonRime;
 	@FXML
-	private TableView<Chapitre> chapitreTable;
+	private TableView<Chapter> chapitreTable;
 	@FXML
-	private TableColumn<Chapitre, Integer> numChapitreColumn;
+	private TableColumn<Chapter, Integer> numChapitreColumn;
 	@FXML
-	private TableColumn<Chapitre, String> titreChapitreColumn;
+	private TableColumn<Chapter, String> titreChapitreColumn;
 	@FXML
 	private ComboBox<Note> listeNotes;
 	@FXML
@@ -57,14 +55,14 @@ public class TabMatiereController implements Controller {
 	@FXML
 	private Label labelTitreNote;
 
-	private Chapitre chapitreSelection = null;
+	private Chapter chapterSelection = null;
 
 	@FXML
 	public void initialize() {
 
 		this.style();
 
-		chapitreSelection = null;
+		chapterSelection = null;
 
 		ArrayList dico = getDico("../bin/ressources/dicoFR.txt");
 		if(dico != null) TextFields.bindAutoCompletion(this.zoneTextRecherche, dico);
@@ -80,7 +78,7 @@ public class TabMatiereController implements Controller {
 
 		texteNotes.textProperty().addListener((observableValue, oldValue, newValue) -> {
 			try {
-				listeNotes.getSelectionModel().getSelectedItem().setTexte(newValue);
+				listeNotes.getSelectionModel().getSelectedItem().setText(newValue);
 			} catch (Exception e) {
 			}
 		});
@@ -91,11 +89,11 @@ public class TabMatiereController implements Controller {
 		try {
 			listeNotes.getItems().clear();
 			ArrayList<Note> notes = new ArrayList<Note>();
-			for (Chapitre c : MainApp.getProjet().getChapitres())
+			for (Chapter c : MainApp.getProject().getChapters())
 				notes.add(c.getNotes());
 
 			listeNotes.getItems().addAll(notes);
-			listeNotes.getItems().add(MainApp.getProjet().getNotes());
+			listeNotes.getItems().add(MainApp.getProject().getNotes());
 			listeNotes.getSelectionModel().selectedItemProperty()
 					.addListener((observable, oldValue, newValue) -> switchNote(newValue));
 		} catch (Exception e) {
@@ -104,7 +102,7 @@ public class TabMatiereController implements Controller {
 
 	private void switchNote(Note newValue) {
 		try {
-			texteNotes.setText(newValue.getTexte());
+			texteNotes.setText(newValue.getText());
 			texteNotes.setEditable(true);
 		} catch (Exception e) {
 			texteNotes.setText("");
@@ -114,26 +112,26 @@ public class TabMatiereController implements Controller {
 	}
 
 	private void displayTableChapitres() {
-		this.titreChapitreColumn.setCellValueFactory(new PropertyValueFactory<Chapitre, String>("titre"));
-		this.numChapitreColumn.setCellValueFactory(new PropertyValueFactory<Chapitre, Integer>("numero"));
+		this.titreChapitreColumn.setCellValueFactory(new PropertyValueFactory<Chapter, String>("titre"));
+		this.numChapitreColumn.setCellValueFactory(new PropertyValueFactory<Chapter, Integer>("numero"));
 
-		if (MainApp.getProjet() != null)
-			this.chapitreTable.setItems(FXCollections.observableList(MainApp.getProjet().getChapitres()));
+		if (MainApp.getProject() != null)
+			this.chapitreTable.setItems(FXCollections.observableList(MainApp.getProject().getChapters()));
 	}
 
 	@FXML
 	public void handleNouveauChapitre() {
-		if(MainApp.getProjet() == null) return;
+		if(MainApp.getProject() == null) return;
 		TextInputDialog dialog = new TextInputDialog("Titre");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getStylesheets().add(MainApp.getStyle());
 		dialog.setTitle("Nouveau chapitre");
 		dialog.setHeaderText("Titre du nouveau chapitre");
-		dialog.setContentText("Entrez le nom du chapitre n°" + (MainApp.getProjet().getChapitres().size() + 1) + " : ");
+		dialog.setContentText("Entrez le nom du chapitre n°" + (MainApp.getProject().getChapters().size() + 1) + " : ");
 		Optional<String> nomChapitre = dialog.showAndWait();
 		if (nomChapitre.isPresent()) {
-			MainApp.getProjet().getChapitres()
-					.add(new Chapitre(nomChapitre.get(), MainApp.getProjet().getChapitres().size() + 1));
+			MainApp.getProject().getChapters()
+					.add(new Chapter(nomChapitre.get(), MainApp.getProject().getChapters().size() + 1));
 			this.displayTableChapitres();
 		}
 		this.displayListeNotes();
@@ -171,46 +169,46 @@ public class TabMatiereController implements Controller {
 		this.buttonRime = buttonRime;
 	}
 
-	public TableView<Chapitre> getChapitreTable() {
+	public TableView<Chapter> getChapitreTable() {
 		return chapitreTable;
 	}
 
-	public void setChapitreTable(TableView<Chapitre> chapitreTable) {
+	public void setChapitreTable(TableView<Chapter> chapitreTable) {
 		this.chapitreTable = chapitreTable;
 	}
 
-	public TableColumn<Chapitre, Integer> getNumChapitreColumn() {
+	public TableColumn<Chapter, Integer> getNumChapitreColumn() {
 		return numChapitreColumn;
 	}
 
-	public void setNumChapitreColumn(TableColumn<Chapitre, Integer> numChapitreColumn) {
+	public void setNumChapitreColumn(TableColumn<Chapter, Integer> numChapitreColumn) {
 		this.numChapitreColumn = numChapitreColumn;
 	}
 
-	public TableColumn<Chapitre, String> getTitreChapitreColumn() {
+	public TableColumn<Chapter, String> getTitreChapitreColumn() {
 		return titreChapitreColumn;
 	}
 
-	public void setTitreChapitreColumn(TableColumn<Chapitre, String> titreChapitreColumn) {
+	public void setTitreChapitreColumn(TableColumn<Chapter, String> titreChapitreColumn) {
 		this.titreChapitreColumn = titreChapitreColumn;
 	}
 
 	/**
 	 * Remplace le chapitre actif
 	 */
-	private void switchChapitre(Chapitre newvalue) {
+	private void switchChapitre(Chapter newvalue) {
 		if (newvalue == null)
 			return;
 		// On save le texte du precedent
-		if (chapitreSelection != null)
-			MainApp.getProjet().getChapitre(MainApp.getProjet().getChapitres().indexOf(chapitreSelection))
-					.setTexte(LayoutController.get().getEcritureController().getTextChapitre());
+		if (chapterSelection != null)
+			MainApp.getProject().getChapter(MainApp.getProject().getChapters().indexOf(chapterSelection))
+					.setText(LayoutController.get().getEcritureController().getTextChapitre());
 
 		// On affiche le texte du nouveau
 		LayoutController.get().getEcritureController().setUpChapitre(newvalue);
 
 		// On remplace le numero par le nouveau numero
-		chapitreSelection = chapitreTable.getSelectionModel().getSelectedItem();
+		chapterSelection = chapitreTable.getSelectionModel().getSelectedItem();
 	}
 
 	private ArrayList<String> getDico(String chemin) {
@@ -231,7 +229,7 @@ public class TabMatiereController implements Controller {
 		return listDico;
 	}
 
-	public Chapitre getChapitreActuel() {
+	public Chapter getChapitreActuel() {
 		return chapitreTable.getSelectionModel().getSelectedItem();
 	}
 
@@ -243,11 +241,11 @@ public class TabMatiereController implements Controller {
 		dialog.setTitle("Renommer");
 		dialog.setHeaderText("Nouveau nom du chapitre");
 		dialog.setContentText("Entrez le nom du chapitre n°"
-				+ (chapitreTable.getSelectionModel().getSelectedItem().getNumero()) + " : ");
+				+ (chapitreTable.getSelectionModel().getSelectedItem().getNumber()) + " : ");
 
 		Optional<String> nomChapitre = dialog.showAndWait();
 		if (nomChapitre.isPresent()) {
-			chapitreTable.getSelectionModel().getSelectedItem().setTitre(nomChapitre.get());
+			chapitreTable.getSelectionModel().getSelectedItem().setTitle(nomChapitre.get());
 			initialize();
 
 			// L'apparence de la table se refresh pas toute seule, aucune
@@ -268,7 +266,7 @@ public class TabMatiereController implements Controller {
 		dialog.setTitle("Déplacer");
 		dialog.setHeaderText("Nouvelle position du chapitre");
 		dialog.setContentText("Entrez la nouvelle position du chapitre "
-				+ (chapitreTable.getSelectionModel().getSelectedItem().getTitre()) + " : ");
+				+ (chapitreTable.getSelectionModel().getSelectedItem().getTitle()) + " : ");
 
 		Optional<String> numChapitre = dialog.showAndWait();
 		if (numChapitre.isPresent()) {
@@ -288,9 +286,9 @@ public class TabMatiereController implements Controller {
 			}
 			if (num < 1)
 				num = 1;
-			if (num > MainApp.getProjet().getChapitres().size())
-				num = MainApp.getProjet().getChapitres().size();
-			MainApp.getProjet().bougerChapitre(chapitreTable.getSelectionModel().getSelectedItem().getNumero() - 1,
+			if (num > MainApp.getProject().getChapters().size())
+				num = MainApp.getProject().getChapters().size();
+			MainApp.getProject().moveChapter(chapitreTable.getSelectionModel().getSelectedItem().getNumber() - 1,
 					num - 1);
 			initialize();
 
@@ -314,11 +312,11 @@ public class TabMatiereController implements Controller {
 		alert.setTitle("Supprimer");
 		alert.setHeaderText("Suppression de chapitre");
 		alert.setContentText("Êtes vous sûr de vouloir supprimer le chapitre "
-				+ chapitreTable.getSelectionModel().getSelectedItem().getTitre());
+				+ chapitreTable.getSelectionModel().getSelectedItem().getTitle());
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			MainApp.getProjet().deleteChapitre(chapitreTable.getSelectionModel().getSelectedIndex());
+			MainApp.getProject().deleteChapter(chapitreTable.getSelectionModel().getSelectedIndex());
 			initialize();
 
 			// Voir deplacerChapitre()

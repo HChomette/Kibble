@@ -1,4 +1,4 @@
-package projet;
+package project;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,25 +9,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ChapitreAnterieur {
+public class PreviousChapter {
 
 	/*ATTRIBUTES*/
 
-	private String texte;
+	private String text;
 	private Date date;
 
 	/*CONSTRUCTORS*/
 
-	public ChapitreAnterieur(String texte, Date date) {
-		this.texte = texte;
+	public PreviousChapter(String text, Date date) {
+		this.text = text;
 		this.date = date;
 	}
 
-	public ChapitreAnterieur(){ }
+	public PreviousChapter(){ }
 
 	/*GETTERS & SETTERS*/
-	public String getTexte() { return texte; }
-	public void setTexte(String texte) { this.texte = texte; }
+	public String getText() { return text; }
+	public void setText(String text) { this.text = text; }
 
 	public Date getDate() { return date; }
 	public void setDate(Date date) { this.date = date; }

@@ -6,12 +6,8 @@ import java.util.Optional;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
-import com.itextpdf.text.log.SysoCounter;
-
 import application.Controller;
 import application.MainApp;
-import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
-import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,8 +32,8 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import projet.Fiche;
-import projet.LigneFiche;
+import project.Card;
+import project.CardLine;
 
 public class FicheController implements Controller {
 
@@ -51,14 +47,14 @@ public class FicheController implements Controller {
 	@FXML
 	private Label labelTitre;
 
-	private Fiche sauvFiche;
+	private Card sauvCard;
 	
 	private AutoCompletionBinding test;
 
 	@FXML
 	public void initialize() {
 		this.style();
-		sauvFiche = new Fiche();
+		sauvCard = new Card();
 		try {
 			test = TextFields.bindAutoCompletion(this.zoneTextRechercheFiche, getNomsFiches());
 		} catch (NullPointerException e) {
@@ -68,8 +64,8 @@ public class FicheController implements Controller {
 	private ArrayList<String> getNomsFiches() {
 		ArrayList<String> tmp = new ArrayList<>();
 		try {
-			for (Fiche fiche : MainApp.getProjet().getFiches()) {
-				tmp.add(fiche.getNom());
+			for (Card card : MainApp.getProject().getFiches()) {
+				tmp.add(card.getName());
 			}
 		} catch (NullPointerException e) {
 		}
@@ -77,11 +73,11 @@ public class FicheController implements Controller {
 	}
 
 	/**
-	 * Affiche la fiche passée en paramètre dans un nouvel onglet
+	 * Affiche la card passée en paramètre dans un nouvel onglet
 	 */
-	public void displayFiche(Fiche fiche) {
-		Tab tab = new Tab(fiche.getNom());
-		tab.setContent(getVBoxFiche(fiche, false));
+	public void displayFiche(Card card) {
+		Tab tab = new Tab(card.getName());
+		tab.setContent(getVBoxFiche(card, false));
 		tabFiches.getTabs().add(tab);
 		tabFiches.getSelectionModel().select(tab);
 		
@@ -90,7 +86,7 @@ public class FicheController implements Controller {
 		
 	}
 
-	private GridPane getGridFiche(Fiche fiche, boolean isEditable) {
+	private GridPane getGridFiche(Card card, boolean isEditable) {
 		// Création de la grille
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(20, 5, 20, 10));
@@ -105,24 +101,24 @@ public class FicheController implements Controller {
 		// Le compteur de ligne
 		int gridLigne = 2;
 
-		Label nomFiche = new Label(fiche.getNom());
+		Label nomFiche = new Label(card.getName());
 		if(LayoutController.fontNBBoldItalic != null) nomFiche.setFont(LayoutController.fontNBBoldItalic);
-		nomFiche.setContextMenu(getContextMenuFiche(fiche));
+		nomFiche.setContextMenu(getContextMenuFiche(card));
 		GridPane.setHalignment(nomFiche, HPos.CENTER);
 		grid.add(nomFiche, 0, 0, 2, gridLigne);
 
 		++gridLigne;
 		++gridLigne;
 
-		for (LigneFiche ligne : fiche.getDonnees()) {
-			Label nomChamp = new Label(ligne.getNomChamp());
+		for (CardLine ligne : card.getDatas()) {
+			Label nomChamp = new Label(ligne.getFieldName());
 			nomChamp.setWrapText(true);
 			// nomChamp.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 			if(LayoutController.fontNBBoldSmall != null) nomChamp.setFont(LayoutController.fontNBBoldSmall);
 			GridPane.setHalignment(nomChamp, HPos.LEFT);
 			grid.add(nomChamp, 0, gridLigne);
 
-			Label champ = new Label(ligne.getValeurChamp());
+			Label champ = new Label(ligne.getFieldValue());
 			champ.setWrapText(true);
 			// champ.setFont(Font.font("Verdana", FontWeight.NORMAL, 12));
 			if(LayoutController.fontNBRegularSmall != null) champ.setFont(LayoutController.fontNBRegularSmall);
@@ -154,7 +150,7 @@ public class FicheController implements Controller {
 						if(LayoutController.fontNBRegularSmall != null) newLabel.setFont(LayoutController.fontNBRegularSmall);
 						newLabel.setWrapText(true);
 						grid.add(newLabel, 0, indexLigne);
-						fiche.getDonnees().get(indexLigne / 4 - 1).setValeurChamp(editTextField.getText());
+						card.getDatas().get(indexLigne / 4 - 1).setFieldValue(editTextField.getText());
 						appuyed.setText("/");
 					}
 				});
@@ -168,8 +164,8 @@ public class FicheController implements Controller {
 				supprLigne.setOnAction(event -> {
 					Button appuyed = (Button) event.getSource();
 					int indexLigne = GridPane.getRowIndex(appuyed);
-					fiche.getDonnees().remove(indexLigne / 4 - 1);
-					LayoutController.get().getFicheController().majTab(fiche, true);
+					card.getDatas().remove(indexLigne / 4 - 1);
+					LayoutController.get().getFicheController().majTab(card, true);
 				});
 			}
 
@@ -189,19 +185,19 @@ public class FicheController implements Controller {
 						return;
 					}
 				}
-				fiche.setDonnees(fiche.getDonnees());
-				LayoutController.get().getFicheController().majTab(fiche, false);
+				card.setDatas(card.getDatas());
+				LayoutController.get().getFicheController().majTab(card, false);
 			});
 			Button annul = new Button("Annuler");
 			GridPane.setHalignment(annul, HPos.RIGHT);
 			grid.add(annul, 0, gridLigne);
-			annul.setOnAction(event -> LayoutController.get().getFicheController().majTab(sauvFiche, false));
+			annul.setOnAction(event -> LayoutController.get().getFicheController().majTab(sauvCard, false));
 		} else {
 			Button modif = new Button("Modifier");
 			GridPane.setHalignment(modif, HPos.RIGHT);
 			modif.setOnAction(event -> {
-				sauvFiche = fiche.clone();
-				LayoutController.get().getFicheController().majTab(fiche, true);
+				sauvCard = card.clone();
+				LayoutController.get().getFicheController().majTab(card, true);
 			});
 			grid.add(modif, 0, ++gridLigne);
 
@@ -220,7 +216,7 @@ public class FicheController implements Controller {
 					button.setText("Enregistrer");
 					grid.getColumnConstraints().get(0).setPercentWidth(90);
 					grid.getColumnConstraints().get(1).setPercentWidth(10);
-					int gridLigne1 = fiche.getDonnees().size() * 4 + 4;
+					int gridLigne1 = card.getDatas().size() * 4 + 4;
 					modif.setVisible(false);
 
 					nomChamp.setPromptText("Nom du champ");
@@ -231,12 +227,12 @@ public class FicheController implements Controller {
 
 					GridPane.setHalignment(annuler, HPos.CENTER);
 					grid.add(annuler, 1, gridLigne1 - 2);
-					annuler.setOnAction(event1 -> LayoutController.get().getFicheController().majTab(fiche, false));
+					annuler.setOnAction(event1 -> LayoutController.get().getFicheController().majTab(card, false));
 				} else if (button.getText().equals("Enregistrer") && !nomChamp.getText().equals("")) {
-					LigneFiche newLigne = new LigneFiche(nomChamp.getText(), valeurChamp.getText());
-					fiche.getDonnees().add(newLigne);
-					fiche.setDonnees(fiche.getDonnees());
-					LayoutController.get().getFicheController().majTab(fiche, false);
+					CardLine newLigne = new CardLine(nomChamp.getText(), valeurChamp.getText());
+					card.getDatas().add(newLigne);
+					card.setDatas(card.getDatas());
+					LayoutController.get().getFicheController().majTab(card, false);
 				}
 			});
 		}
@@ -244,17 +240,17 @@ public class FicheController implements Controller {
 		return grid;
 	}
 
-	private ContextMenu getContextMenuFiche(Fiche fiche) {
+	private ContextMenu getContextMenuFiche(Card card) {
 		ContextMenu cm = new ContextMenu();
 		MenuItem renommer = new MenuItem("Renommer");
 		renommer.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				TextInputDialog dialog = new TextInputDialog(fiche.getNom());
+				TextInputDialog dialog = new TextInputDialog(card.getName());
 				DialogPane dialogPane = dialog.getDialogPane();
 				dialogPane.getStylesheets().add(MainApp.getStyle());
-				dialog.setTitle("Fiche");
-				dialog.setHeaderText("Renommer la fiche " + fiche.getNom());
-				dialog.setContentText("Entrez le nouveau nom de votre fiche : ");
+				dialog.setTitle("Card");
+				dialog.setHeaderText("Renommer la card " + card.getName());
+				dialog.setContentText("Entrez le nouveau nom de votre card : ");
 
 				// Traditional way to get the response value.
 				Optional<String> nomFiche = dialog.showAndWait();
@@ -262,16 +258,16 @@ public class FicheController implements Controller {
 					if (!nomFicheUnique(nomFiche.get())) {
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("Erreur");
-						alert.setHeaderText("Erreur sur le nom de la fiche");
-						alert.setContentText("Le nom de fiche : " + nomFiche.get()
+						alert.setHeaderText("Erreur sur le nom de la card");
+						alert.setContentText("Le nom de card : " + nomFiche.get()
 								+ " est déjà utilisé, vous ne pouvez pas avoir deux fiches avec le même nom");
 
 						alert.showAndWait();
 						this.handle(e);
 					} else {
-						fermerTabFiche(fiche);
-						fiche.setNom(nomFiche.get());
-						displayFiche(fiche);
+						fermerTabFiche(card);
+						card.setName(nomFiche.get());
+						displayFiche(card);
 					}
 
 				}
@@ -282,26 +278,26 @@ public class FicheController implements Controller {
 		supprimer.setOnAction(e -> {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Confirmation suppression");
-			alert.setHeaderText("Suppression de la fiche " + fiche.getNom());
-			alert.setContentText("Êtes-vous sûr de supprimer cette fiche ?");
+			alert.setHeaderText("Suppression de la card " + card.getName());
+			alert.setContentText("Êtes-vous sûr de supprimer cette card ?");
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
-				fermerTabFiche(fiche);
-				MainApp.getProjet().getFiches().remove(fiche);
+				fermerTabFiche(card);
+				MainApp.getProject().getFiches().remove(card);
 			}
 		});
 		cm.getItems().addAll(renommer, supprimer);
 		return cm;
 	}
 
-	public void majTab(Fiche fiche, boolean isModifiable) {
+	public void majTab(Card card, boolean isModifiable) {
 		this.tabFiches.getTabs().get(this.tabFiches.getSelectionModel().getSelectedIndex())
-				.setContent(getVBoxFiche(fiche, isModifiable));
+				.setContent(getVBoxFiche(card, isModifiable));
 	}
 
-	private VBox getVBoxFiche(Fiche fiche, boolean isModifiable) {
-		ScrollPane sp = new ScrollPane(getGridFiche(fiche, isModifiable));
+	private VBox getVBoxFiche(Card card, boolean isModifiable) {
+		ScrollPane sp = new ScrollPane(getGridFiche(card, isModifiable));
 		sp.setFitToWidth(true);
 		sp.setStyle("-fx-background-color:transparent;");
 		sp.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
@@ -324,18 +320,18 @@ public class FicheController implements Controller {
 		if (getNomsFiches().contains(zoneTextRechercheFiche.getText())
 				&& !isOuverte(zoneTextRechercheFiche.getText())) {
 			displayFiche(
-					MainApp.getProjet().getFiches().get(getNomsFiches().indexOf(zoneTextRechercheFiche.getText())));
+					MainApp.getProject().getFiches().get(getNomsFiches().indexOf(zoneTextRechercheFiche.getText())));
 			zoneTextRechercheFiche.setText("");
 		}
 	}
 
 	private String handleNouvelleFiche(String type) {
-		if (MainApp.getProjet() == null)
+		if (MainApp.getProject() == null)
 			return null;
 		TextInputDialog dialog = new TextInputDialog("Nom");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getStylesheets().add(MainApp.getStyle());
-		dialog.setTitle("Fiche");
+		dialog.setTitle("Card");
 		dialog.setHeaderText("Nouvelle fiche " + type);
 		dialog.setContentText("Entrez le nom de votre nouvelle fiche " + type + " :");
 
@@ -362,9 +358,9 @@ public class FicheController implements Controller {
 	protected void handleNouvelleFicheLieu() {
 		String nomFiche = handleNouvelleFiche("lieu");
 		if (nomFiche != null) {
-			Fiche newFiche = Fiche.getFicheLieu(nomFiche);
-			MainApp.getProjet().getFiches().add(newFiche);
-			displayFiche(newFiche);
+			Card newCard = Card.getPlaceCard(nomFiche);
+			MainApp.getProject().getFiches().add(newCard);
+			displayFiche(newCard);
 		}
 	}
 
@@ -372,9 +368,9 @@ public class FicheController implements Controller {
 	protected void handleNouvelleFichePersonnage() {
 		String nomFiche = handleNouvelleFiche("personnage");
 		if (nomFiche != null) {
-			Fiche newFiche = Fiche.getFichePersonnage(nomFiche);
-			MainApp.getProjet().getFiches().add(newFiche);
-			displayFiche(newFiche);
+			Card newCard = Card.getCharacterCard(nomFiche);
+			MainApp.getProject().getFiches().add(newCard);
+			displayFiche(newCard);
 		}
 	}
 
@@ -382,9 +378,9 @@ public class FicheController implements Controller {
 	protected void handleNouvelleFicheEvenement() {
 		String nomFiche = handleNouvelleFiche("évènement");
 		if (nomFiche != null) {
-			Fiche newFiche = Fiche.getFicheEvnmt(nomFiche);
-			MainApp.getProjet().getFiches().add(newFiche);
-			displayFiche(newFiche);
+			Card newCard = Card.getEventCard(nomFiche);
+			MainApp.getProject().getFiches().add(newCard);
+			displayFiche(newCard);
 		}
 	}
 
@@ -392,9 +388,9 @@ public class FicheController implements Controller {
 	protected void handleNouvelleFichePersonnalise() {
 		String nomFiche = handleNouvelleFiche("personnalisée");
 		if (nomFiche != null) {
-			Fiche newFiche = new Fiche(nomFiche);
-			MainApp.getProjet().getFiches().add(newFiche);
-			displayFiche(newFiche);
+			Card newCard = new Card(nomFiche);
+			MainApp.getProject().getFiches().add(newCard);
+			displayFiche(newCard);
 		}
 	}
 
@@ -412,9 +408,9 @@ public class FicheController implements Controller {
 		return result;
 	}
 
-	private void fermerTabFiche(Fiche fiche) {
+	private void fermerTabFiche(Card card) {
 		for (Tab tab : tabFiches.getTabs()) {
-			if (tab.getText().equals(fiche.getNom())) {
+			if (tab.getText().equals(card.getName())) {
 				tabFiches.getTabs().remove(tab);
 				break;
 			}
@@ -422,8 +418,8 @@ public class FicheController implements Controller {
 	}
 
 	public boolean nomFicheUnique(String nom) {
-		for (Fiche fiche : MainApp.getProjet().getFiches()) {
-			if (fiche.getNom().equals(nom))
+		for (Card card : MainApp.getProject().getFiches()) {
+			if (card.getName().equals(nom))
 				return false;
 		}
 		return true;
