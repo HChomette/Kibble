@@ -87,7 +87,7 @@ public class EcritureController implements Controller {
 		} catch (NullPointerException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Erreur");
-			alert.setHeaderText("Aucun Chapter");
+			alert.setHeaderText("Aucun chapitre");
 			alert.setContentText("Vous devez d'abord ouvrir un chapitre");
 
 			alert.showAndWait();

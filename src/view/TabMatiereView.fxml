@@ -21,7 +21,7 @@
                   <TableView fx:id="chapitreTable" layoutX="47.0" layoutY="3.0" minWidth="318.0" prefHeight="226.0" prefWidth="318.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
                     <columns>
                       <TableColumn fx:id="numChapitreColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" sortable="false" text="N°" />
-                      <TableColumn fx:id="titreChapitreColumn" prefWidth="260.0" sortable="false" text="Titre du chapter" />
+                      <TableColumn fx:id="titreChapitreColumn" prefWidth="260.0" sortable="false" text="Titre du chapitre" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -29,9 +29,9 @@
                      <contextMenu>
                         <ContextMenu>
                           <items>
-                            <MenuItem mnemonicParsing="false" onAction="#renommerChapitre" text="Renommer" />
-                              <MenuItem mnemonicParsing="false" onAction="#deplacerChapitre" text="Déplacer" />
-                              <MenuItem mnemonicParsing="false" onAction="#supprimerChapitre" text="Supprimer" />
+                            <MenuItem mnemonicParsing="false" onAction="#renameChapter" text="Renommer" />
+                              <MenuItem mnemonicParsing="false" onAction="#moveChapter" text="Déplacer" />
+                              <MenuItem mnemonicParsing="false" onAction="#deleteChapter" text="Supprimer" />
                           </items>
                         </ContextMenu>
                      </contextMenu>

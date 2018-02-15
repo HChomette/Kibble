@@ -248,9 +248,9 @@ public class FicheController implements Controller {
 				TextInputDialog dialog = new TextInputDialog(card.getName());
 				DialogPane dialogPane = dialog.getDialogPane();
 				dialogPane.getStylesheets().add(MainApp.getStyle());
-				dialog.setTitle("Card");
-				dialog.setHeaderText("Renommer la card " + card.getName());
-				dialog.setContentText("Entrez le nouveau nom de votre card : ");
+				dialog.setTitle("Fiche");
+				dialog.setHeaderText("Renommer la fiche " + card.getName());
+				dialog.setContentText("Entrez le nouveau nom de votre fiche : ");
 
 				// Traditional way to get the response value.
 				Optional<String> nomFiche = dialog.showAndWait();
@@ -258,8 +258,8 @@ public class FicheController implements Controller {
 					if (!nomFicheUnique(nomFiche.get())) {
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("Erreur");
-						alert.setHeaderText("Erreur sur le nom de la card");
-						alert.setContentText("Le nom de card : " + nomFiche.get()
+						alert.setHeaderText("Erreur sur le nom de la fiche");
+						alert.setContentText("Le nom de fiche : " + nomFiche.get()
 								+ " est déjà utilisé, vous ne pouvez pas avoir deux fiches avec le même nom");
 
 						alert.showAndWait();
@@ -278,8 +278,8 @@ public class FicheController implements Controller {
 		supprimer.setOnAction(e -> {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Confirmation suppression");
-			alert.setHeaderText("Suppression de la card " + card.getName());
-			alert.setContentText("Êtes-vous sûr de supprimer cette card ?");
+			alert.setHeaderText("Suppression de la fiche " + card.getName());
+			alert.setContentText("Êtes-vous sûr de supprimer cette fiche ?");
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
@@ -331,7 +331,7 @@ public class FicheController implements Controller {
 		TextInputDialog dialog = new TextInputDialog("Nom");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getStylesheets().add(MainApp.getStyle());
-		dialog.setTitle("Card");
+		dialog.setTitle("Fiche");
 		dialog.setHeaderText("Nouvelle fiche " + type);
 		dialog.setContentText("Entrez le nom de votre nouvelle fiche " + type + " :");
 

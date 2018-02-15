@@ -112,8 +112,8 @@ public class TabMatiereController implements Controller {
 	}
 
 	private void displayTableChapitres() {
-		this.titreChapitreColumn.setCellValueFactory(new PropertyValueFactory<Chapter, String>("titre"));
-		this.numChapitreColumn.setCellValueFactory(new PropertyValueFactory<Chapter, Integer>("numero"));
+		this.titreChapitreColumn.setCellValueFactory(new PropertyValueFactory<Chapter, String>("title"));
+		this.numChapitreColumn.setCellValueFactory(new PropertyValueFactory<Chapter, Integer>("number"));
 
 		if (MainApp.getProject() != null)
 			this.chapitreTable.setItems(FXCollections.observableList(MainApp.getProject().getChapters()));
@@ -234,7 +234,7 @@ public class TabMatiereController implements Controller {
 	}
 
 	@FXML
-	private void renommerChapitre() {
+	private void renameChapter() {
 		TextInputDialog dialog = new TextInputDialog("Nom");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getStylesheets().add(MainApp.getStyle());
@@ -259,7 +259,7 @@ public class TabMatiereController implements Controller {
 	}
 
 	@FXML
-	private void deplacerChapitre() {
+	private void moveChapter() {
 		TextInputDialog dialog = new TextInputDialog("Position");
 		DialogPane dialogPane = dialog.getDialogPane();
 		dialogPane.getStylesheets().add(MainApp.getStyle());
@@ -305,7 +305,7 @@ public class TabMatiereController implements Controller {
 	}
 
 	@FXML
-	private void supprimerChapitre() {
+	private void deleteChapter() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		DialogPane dialogPane = alert.getDialogPane();
 		dialogPane.getStylesheets().add(MainApp.getStyle());
@@ -319,7 +319,7 @@ public class TabMatiereController implements Controller {
 			MainApp.getProject().deleteChapter(chapitreTable.getSelectionModel().getSelectedIndex());
 			initialize();
 
-			// Voir deplacerChapitre()
+			// Voir moveChapter()
 			chapitreTable.getColumns().get(0).setVisible(false);
 			chapitreTable.getColumns().get(0).setVisible(true);
 			chapitreTable.getColumns().get(1).setVisible(false);

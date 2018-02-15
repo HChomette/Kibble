@@ -232,8 +232,8 @@ public class LayoutController implements Controller {
 			DialogPane dialogPane = dialog.getDialogPane();
 			dialogPane.getStylesheets().add(MainApp.getStyle());
 			dialog.setTitle("Projets");
-			dialog.setHeaderText("Choisissez le project à récupérer");
-			dialog.setContentText("Nom du project :");
+			dialog.setHeaderText("Choisissez le projet à récupérer");
+			dialog.setContentText("Nom du projet :");
 			Optional<String> res = dialog.showAndWait();
 			if (res.isPresent()) {
 				if (FtpClient.downloadDialog(res.get() + ext, "*" + ext))
@@ -251,8 +251,8 @@ public class LayoutController implements Controller {
 		alert.getDialogPane().setPrefSize(480, 250);
 		alert.setTitle("Informations");
 		alert.setHeaderText("A propos de Kibble");
-		alert.setContentText("Kibble est un project réalisé par Xavier, Nolwenn, Aline, Lucas et Hector. \n"
-				+ "Nous sommes 5 élèves de l'IUT Paris Descartes, et ce programme a été réalisé dans le cadre d'un project de fin d'année. \n\n"
+		alert.setContentText("Kibble est un projet réalisé par Xavier, Nolwenn, Aline, Lucas et Hector. \n"
+				+ "Nous sommes 5 élèves de l'IUT Paris Descartes, et ce programme a été réalisé dans le cadre d'un projet de fin d'année. \n\n"
 				+ "Le logiciel est programmé en Java et utilise JavaFX pour ses interfaces. "
 				+ "Nous avons également utilisé la bibliothèque iTextPdf(Génération de pdf)");
 
